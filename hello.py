@@ -1,5 +1,5 @@
 from collections import defaultdict
-from Tkinter import *
+from tkinter import *
 
 class Task(object):
 
@@ -24,6 +24,19 @@ class Task(object):
     def setDepth(self,depth):
         self.depth=depth
 
+    def PrintTree(self):
+        print(self.value)
+        self.PrintChildren()
+
+    def PrintChildren(self):
+        for child in self.children:
+            print('-'*child.depth + child.value)
+            child.PrintChildren()
+
+
+
+
+
 master = Task('This is a Task')
 task2 = Task('One thing required')
 task3 = Task('Another thing')
@@ -37,15 +50,6 @@ task2.add_child(subtask)
 #walk tree and print values
 
 
-def PrintTree(obj):
-    print(obj.value)
-    PrintChildren(obj)
-
-def PrintChildren(obj):
-    for child in obj.children:
-        print('-'*child.depth + child.value)
-        PrintChildren(child)
-
 
 def commandloop():
     quit = False
@@ -55,12 +59,31 @@ def commandloop():
         if command[0] == '1':
             print('lol nah')
         if command[0] == '2':
-            PrintTree(master)
+            master.PrintTree()
         if command[0] == '3':
             quit = True
 
 Tasks = []
 Tasks.append(Task('hello'))
 print(Tasks[0].parents)
+
+
+class Gui:
+    def __init__(self, master):
+        
+        frame = Frame(master)
+        frame.pack()
+
+        self.quitbutton = Button(frame,text="QUIT",fg="red",command=frame.quit)
+        self.quitbutton.pack(side=LEFT)
+        Button(frame,text="Tree",command=self.showtree()).pack(side=LEFT)
+
+    def showtree(self):
+        master.PrintTree()
+
+root = Tk()
+gui = Gui(root)
+root.mainloop()
+root.destroy()
 
 commandloop()
